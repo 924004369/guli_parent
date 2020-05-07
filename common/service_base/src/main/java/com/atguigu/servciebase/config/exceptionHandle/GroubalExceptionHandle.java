@@ -25,4 +25,11 @@ public class GroubalExceptionHandle {
         e.printStackTrace();
         return ResultMap.error().message("!!!!!!!!!!!!!");
     }
+
+    @ExceptionHandler(GuliException.class)
+    @ResponseBody
+    public ResultMap error02(GuliException e){
+        e.printStackTrace();
+        return ResultMap.error().code(e.getCode()).message(e.getMsg());
+    }
 }

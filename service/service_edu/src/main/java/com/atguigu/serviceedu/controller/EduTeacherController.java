@@ -3,12 +3,14 @@ package com.atguigu.serviceedu.controller;
 
 import com.atguigu.commonutils.ResultCode;
 import com.atguigu.commonutils.ResultMap;
+import com.atguigu.servciebase.config.exceptionHandle.GuliException;
 import com.atguigu.serviceedu.entity.EduTeacher;
 import com.atguigu.serviceedu.entity.vo.TeacherQuery;
 import com.atguigu.serviceedu.service.EduTeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +55,11 @@ public class EduTeacherController {
                              @PathVariable(value = "size") Long size){
         Page<EduTeacher> page=new Page<>(currentPage,size);
         QueryWrapper<EduTeacher> queryWrapper=new QueryWrapper();
-        Integer result=10/0;
+        try {
+            Integer result=10/0;
+        } catch (Exception e) {
+            throw new GuliException(400,"执行了自定义异常。。。");
+        }
         queryWrapper.eq("level",1);
         final IPage<EduTeacher> page1 = eduTeacherService.page(page, queryWrapper);
         final long total = page1.getTotal();
