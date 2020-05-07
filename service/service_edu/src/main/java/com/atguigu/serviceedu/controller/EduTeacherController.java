@@ -53,6 +53,7 @@ public class EduTeacherController {
                              @PathVariable(value = "size") Long size){
         Page<EduTeacher> page=new Page<>(currentPage,size);
         QueryWrapper<EduTeacher> queryWrapper=new QueryWrapper();
+        Integer result=10/0;
         queryWrapper.eq("level",1);
         final IPage<EduTeacher> page1 = eduTeacherService.page(page, queryWrapper);
         final long total = page1.getTotal();
@@ -88,6 +89,30 @@ public class EduTeacherController {
         map.put("total",total);
         map.put("rows",records);
         return ResultMap.ok().data(map);
+    }
+
+    @PostMapping("/addTeacher")
+    public ResultMap addTeacher(@RequestBody EduTeacher eduTeacher){
+        final boolean save = eduTeacherService.save(eduTeacher);
+        if (save){
+            return ResultMap.ok().message("添加讲师成功");
+        }
+        return ResultMap.error().message("添加讲师失败");
+    }
+
+    @GetMapping("/getTeacher/{id}")
+    public ResultMap getTeacher(@PathVariable String id){
+        final EduTeacher teacher = eduTeacherService.getById(id);
+        return ResultMap.ok().data("teacher",teacher);
+    }
+
+    @PostMapping("/updateTeacher")
+    public ResultMap updateTeacher(@RequestBody EduTeacher eduTeacher){
+        final boolean flag = eduTeacherService.updateById(eduTeacher);
+        if (flag){
+            return ResultMap.ok().message("修改成功");
+        }
+        return ResultMap.error().message("修改失败");
     }
 }
 
