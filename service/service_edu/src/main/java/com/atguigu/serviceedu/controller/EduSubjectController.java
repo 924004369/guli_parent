@@ -2,14 +2,14 @@ package com.atguigu.serviceedu.controller;
 
 
 import com.atguigu.commonutils.ResultMap;
+import com.atguigu.serviceedu.entity.EduSubject;
 import com.atguigu.serviceedu.service.EduSubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 /**
@@ -34,6 +34,18 @@ public class EduSubjectController {
         subjectService.addSubject(file,subjectService);
 
         return ResultMap.ok();
+    }
+
+    @GetMapping("/")
+    public ResultMap getSubject(){
+        final List<EduSubject> list = subjectService.getSubject();
+
+        return ResultMap.ok().data("list",list);
+    }
+
+    @GetMapping("/list")
+    public List<EduSubject>list(){
+        return subjectService.list();
     }
 
 }

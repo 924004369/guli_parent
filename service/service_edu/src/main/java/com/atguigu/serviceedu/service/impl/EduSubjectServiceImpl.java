@@ -7,10 +7,12 @@ import com.atguigu.serviceedu.listener.SubjectExcelListener;
 import com.atguigu.serviceedu.mapper.EduSubjectMapper;
 import com.atguigu.serviceedu.service.EduSubjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * <p>
@@ -23,6 +25,8 @@ import java.io.InputStream;
 @Service
 public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubject> implements EduSubjectService {
 
+    @Autowired(required = false)
+    private EduSubjectMapper eduSubjectMapper;
     //添加课程分类
     @Override
     public void addSubject(MultipartFile file,EduSubjectService subjectService) {
@@ -32,5 +36,19 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<EduSubject> getSubject() {
+        List<EduSubject> list=eduSubjectMapper.getSubjects();
+        if (list.size()>0){
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    public List<EduSubject> list() {
+        return eduSubjectMapper.list();
     }
 }
