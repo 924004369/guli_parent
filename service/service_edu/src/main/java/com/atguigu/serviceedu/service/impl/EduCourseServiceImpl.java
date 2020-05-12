@@ -1,13 +1,17 @@
 package com.atguigu.serviceedu.service.impl;
 
 import com.atguigu.servciebase.config.exceptionHandle.GuliException;
+import com.atguigu.serviceedu.entity.EduChapter;
 import com.atguigu.serviceedu.entity.EduCourse;
 import com.atguigu.serviceedu.entity.EduCourseDescription;
+import com.atguigu.serviceedu.entity.EduVideo;
 import com.atguigu.serviceedu.entity.vo.CourseInfo;
 import com.atguigu.serviceedu.entity.vo.CoursePublishVo;
 import com.atguigu.serviceedu.mapper.EduCourseMapper;
+import com.atguigu.serviceedu.service.EduChapterService;
 import com.atguigu.serviceedu.service.EduCourseDescriptionService;
 import com.atguigu.serviceedu.service.EduCourseService;
+import com.atguigu.serviceedu.service.EduVideoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +35,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired(required = false)
     EduCourseMapper courseMapper;
+
+    @Autowired
+    private EduChapterService chapterService;
+
+    @Autowired
+    private EduVideoService videoService;
+
 
     @Override
     public String saveCourseInfo(CourseInfo courseInfo) {
@@ -87,9 +98,40 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         final boolean b = courseDescriptionService.updateById(eduCourseDescription);
     }
 
+
     @Override
     public CoursePublishVo getCourseInfoById(String courseId) {
         final CoursePublishVo publishCourseInfo = courseMapper.getPublishCourseInfo(courseId);
         return publishCourseInfo;
+    }
+
+    /**
+     * 删除课程，以及相关的数据
+     * @param courseId
+     */
+    @Override
+    @Transactional
+    public void deleteCourse(String courseId) {
+        //1、删除小节
+        QueryWrapper<EduVideo> wrapperVideo=new QueryWrapper<>();
+        wrapperVideo.eq("course_id",courseId);
+        final boolean b = videoService.remove(wrapperVideo);
+
+        //2、删除章节
+        QueryWrapper<EduChapter> wrapperChapter=new QueryWrapper<>();
+        wrapperChapter.eq("course_id",courseId);
+        final boolean b1 = chapterService.remove(wrapperChapter);
+        //3、删除描述
+        QueryWrapper<EduCourseDescription> descriptionQueryWrapper=new QueryWrapper<>();
+        descriptionQueryWrapper.eq("id",courseId);
+        final boolean b2 = courseDescriptionService.remove(descriptionQueryWrapper);
+        //4、删除课程本身
+        QueryWrapper<EduCourse> courseQueryWrapper=new QueryWrapper<>();
+        courseQueryWrapper.eq("id",courseId);
+        final int i = baseMapper.delete(courseQueryWrapper);
+        if (i<=0){
+            throw new GuliException(400,"删除失败");
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package com.atguigu.serviceedu.controller;
 
 
 import com.atguigu.commonutils.ResultMap;
+import com.atguigu.serviceedu.entity.EduCourse;
 import com.atguigu.serviceedu.entity.vo.CourseInfo;
 import com.atguigu.serviceedu.entity.vo.CoursePublishVo;
 import com.atguigu.serviceedu.service.EduCourseService;
@@ -52,6 +53,25 @@ public class EduCourseController {
 
     }
 
+    //课程的最终发布状态
+    @PostMapping("/publishCourse/{id}")
+    public ResultMap publishCourse(@PathVariable String id){
+        EduCourse course=new EduCourse();
+        course.setId(id);
+        course.setStatus("Normal");//设置课程发布状态，normal表示已发布，Draft表示未发布
+        final boolean b = courseService.updateById(course);
+        if (b){
+            return ResultMap.ok();
+        }
+        return ResultMap.error();
+    }
 
+
+    //删除课程
+    @DeleteMapping("/{courseId}")
+    public ResultMap deleteCourse(@PathVariable String courseId){
+        courseService. deleteCourse(courseId);
+        return ResultMap.ok();
+    }
 }
 
