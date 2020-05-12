@@ -1,5 +1,6 @@
 package com.atguigu.serviceedu.service.impl;
 
+import com.atguigu.servciebase.config.exceptionHandle.GuliException;
 import com.atguigu.serviceedu.entity.EduChapter;
 import com.atguigu.serviceedu.entity.EduVideo;
 import com.atguigu.serviceedu.entity.chapter.ChapterVo;
@@ -67,5 +68,18 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         }
 
         return finalList;
+    }
+
+    @Override
+    public int deleteChapterById(String chapterId) {
+        QueryWrapper<EduVideo> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("chapter_id", chapterId);
+        final int count = videoService.count(queryWrapper);
+        if (count>0){
+            throw new GuliException(400,"章节下有小节，不能删除");
+        }
+        final int i = baseMapper.deleteById(chapterId);
+        return i;
+
     }
 }

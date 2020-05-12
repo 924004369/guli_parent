@@ -3,6 +3,7 @@ package com.atguigu.serviceedu.controller;
 
 import com.atguigu.commonutils.ResultMap;
 import com.atguigu.serviceedu.entity.vo.CourseInfo;
+import com.atguigu.serviceedu.entity.vo.CoursePublishVo;
 import com.atguigu.serviceedu.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,16 @@ public class EduCourseController {
     public ResultMap updateCourseInfo(@RequestBody CourseInfo courseInfo){
         courseService.updateCourseInfo(courseInfo);
         return ResultMap.ok();
+    }
+
+
+    //根据课程ID查询所有课程相关的信息
+    @GetMapping("/getCourseInfoById/{courseId}")
+    public ResultMap getCourseInfoById(@PathVariable String courseId){
+        CoursePublishVo coursePublishVo=courseService.getCourseInfoById(courseId);
+
+        return ResultMap.ok().data("coursePublishVo",coursePublishVo);
+
     }
 
 

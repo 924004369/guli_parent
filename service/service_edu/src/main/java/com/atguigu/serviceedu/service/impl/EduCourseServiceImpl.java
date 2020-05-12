@@ -4,6 +4,7 @@ import com.atguigu.servciebase.config.exceptionHandle.GuliException;
 import com.atguigu.serviceedu.entity.EduCourse;
 import com.atguigu.serviceedu.entity.EduCourseDescription;
 import com.atguigu.serviceedu.entity.vo.CourseInfo;
+import com.atguigu.serviceedu.entity.vo.CoursePublishVo;
 import com.atguigu.serviceedu.mapper.EduCourseMapper;
 import com.atguigu.serviceedu.service.EduCourseDescriptionService;
 import com.atguigu.serviceedu.service.EduCourseService;
@@ -27,6 +28,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
+
+    @Autowired(required = false)
+    EduCourseMapper courseMapper;
 
     @Override
     public String saveCourseInfo(CourseInfo courseInfo) {
@@ -66,6 +70,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return courseInfo;
     }
 
+
+
     @Override
     public void updateCourseInfo(CourseInfo courseInfo) {
         EduCourse eduCourse=new EduCourse();
@@ -79,7 +85,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourseDescription eduCourseDescription=new EduCourseDescription();
         eduCourseDescription.setDescription(courseInfo.getDescription());
         final boolean b = courseDescriptionService.updateById(eduCourseDescription);
+    }
 
-
+    @Override
+    public CoursePublishVo getCourseInfoById(String courseId) {
+        final CoursePublishVo publishCourseInfo = courseMapper.getPublishCourseInfo(courseId);
+        return publishCourseInfo;
     }
 }

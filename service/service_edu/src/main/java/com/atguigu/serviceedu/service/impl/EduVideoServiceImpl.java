@@ -17,4 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> implements EduVideoService {
 
+    @Override
+    public boolean deleteVideoById(String id) {
+        final int i = baseMapper.deleteById(id);
+        return i>0;
+    }
 }
