@@ -3,7 +3,9 @@ package com.atguigu.serviceedu.controller;
 
 import com.atguigu.commonutils.ResultMap;
 import com.atguigu.serviceedu.entity.EduSubject;
+import com.atguigu.serviceedu.entity.subject.OneSubject;
 import com.atguigu.serviceedu.service.EduSubjectService;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +48,14 @@ public class EduSubjectController {
     @GetMapping("/list")
     public List<EduSubject>list(){
         return subjectService.list();
+    }
+
+    //课程分类列表（树形）
+    @GetMapping("/getAllSubject")
+    public ResultMap getAllSubject() {
+        //list集合泛型是一级分类
+        List<OneSubject> list = subjectService.getAllOneTwoSubject();
+        return ResultMap.ok().data("list",list);
     }
 
 }

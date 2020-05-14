@@ -47,7 +47,7 @@ public class EduChapterController {
     }
 
     //修改章节
-    @GetMapping("/updateChapterById")
+    @PostMapping("/updateChapterById")
     public ResultMap updateChapterById(@RequestBody EduChapter eduChapter){
         final boolean b = chapterService.updateById(eduChapter);
         if (b){

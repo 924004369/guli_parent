@@ -4,6 +4,7 @@ package com.atguigu.serviceedu.controller;
 import com.atguigu.commonutils.ResultMap;
 import com.atguigu.serviceedu.entity.EduVideo;
 import com.atguigu.serviceedu.service.EduVideoService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +57,13 @@ public class EduVideoController {
             return ResultMap.ok();
         }
         return ResultMap.error();
+    }
+
+    //小节数据回显
+    @GetMapping("/getVideoById/{id}")
+    public ResultMap getVideoById(@PathVariable String id){
+        EduVideo eduVideo=videoService.getVideoById(id);
+        return ResultMap.ok().data("eduVideo",eduVideo);
     }
 
 

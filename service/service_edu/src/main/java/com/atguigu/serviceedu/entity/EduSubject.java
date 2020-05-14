@@ -52,7 +52,7 @@ public class EduSubject implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
-    private List<EduSubject> children;
+//    private List<EduSubject> children;
 
 
 }
