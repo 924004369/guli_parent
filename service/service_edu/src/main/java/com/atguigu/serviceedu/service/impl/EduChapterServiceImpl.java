@@ -82,4 +82,11 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         return i;
 
     }
+
+    @Override
+    public List<EduChapter> getChapterByCourseId(String courseId) {
+        QueryWrapper<EduChapter> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("course_id",courseId);
+        return baseMapper.selectList(queryWrapper);
+    }
 }

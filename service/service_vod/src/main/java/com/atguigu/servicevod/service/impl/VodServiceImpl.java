@@ -69,7 +69,7 @@ public class VodServiceImpl implements VodService {
             client.getAcsResponse(request);
         }catch(Exception e) {
             e.printStackTrace();
-            throw new GuliException(20001,"删除视频失败");
+            throw new GuliException(400,"删除视频失败");
         }
     }
     public static void main(String[] args) {

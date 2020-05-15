@@ -80,7 +80,7 @@ public class EduCourseController {
     @DeleteMapping("/{courseId}")
     public ResultMap deleteCourse(@PathVariable String courseId){
         courseService. deleteCourse(courseId);
-        return ResultMap.ok();
+        return ResultMap.ok().message("删除成功");
     }
 
     @GetMapping

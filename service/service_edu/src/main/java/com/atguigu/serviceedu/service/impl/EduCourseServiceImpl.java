@@ -1,10 +1,12 @@
 package com.atguigu.serviceedu.service.impl;
 
 import com.atguigu.servciebase.config.exceptionHandle.GuliException;
+import com.atguigu.serviceedu.client.VodClient;
 import com.atguigu.serviceedu.entity.EduChapter;
 import com.atguigu.serviceedu.entity.EduCourse;
 import com.atguigu.serviceedu.entity.EduCourseDescription;
 import com.atguigu.serviceedu.entity.EduVideo;
+import com.atguigu.serviceedu.entity.chapter.ChapterVo;
 import com.atguigu.serviceedu.entity.vo.CourseInfo;
 import com.atguigu.serviceedu.entity.vo.CoursePublishVo;
 import com.atguigu.serviceedu.mapper.EduCourseMapper;
@@ -14,10 +16,14 @@ import com.atguigu.serviceedu.service.EduCourseService;
 import com.atguigu.serviceedu.service.EduVideoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -41,6 +47,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduVideoService videoService;
+
+    @Autowired
+    private VodClient vodClient;
 
 
     @Override
@@ -112,6 +121,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     @Transactional
     public void deleteCourse(String courseId) {
+        //删除视频
+        final List<EduChapter> eduChapterList = chapterService.getChapterByCourseId(courseId);
+        for (EduChapter chapter:eduChapterList){
+            final List<EduVideo> videoList = videoService.getVideoByChapterId(chapter.getId());
+            List<String> list=new ArrayList<>();
+            for (EduVideo video:videoList){
+                list.add(video.getVideoSourceId());
+            }
+            final String array = StringUtils.join(list.toArray(), ",");
+            vodClient.removeAlyVideo(array);
+        }
         //1、删除小节
         QueryWrapper<EduVideo> wrapperVideo=new QueryWrapper<>();
         wrapperVideo.eq("course_id",courseId);

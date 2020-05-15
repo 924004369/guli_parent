@@ -2,6 +2,8 @@ package com.atguigu.serviceedu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2020/5/7 9:51
  */
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
 @ComponentScan(basePackages = {"com.atguigu"})
 public class ServiceEduApplication {
     public static void main(String[] args) {

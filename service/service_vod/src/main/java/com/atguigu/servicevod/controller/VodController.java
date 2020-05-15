@@ -31,7 +31,7 @@ public class VodController {
     }
 
     //根据视频id删除阿里云视频
-    @DeleteMapping("removeAlyVideo/{id}")
+    @DeleteMapping("/removeAlyVideo/{id}")
     public ResultMap removeAlyVideo(@PathVariable String id) {
         try {
             //初始化对象
@@ -51,7 +51,7 @@ public class VodController {
 
     //删除多个阿里云视频的方法
     //参数多个视频id  List videoIdList
-    @DeleteMapping("delete-batch")
+    @DeleteMapping("/delete-batch")
     public ResultMap deleteBatch(@RequestParam("videoIdList") List<String> videoIdList) {
         vodService.removeMoreAlyVideo(videoIdList);
         return ResultMap.ok();

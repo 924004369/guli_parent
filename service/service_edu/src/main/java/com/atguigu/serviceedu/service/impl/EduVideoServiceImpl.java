@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程视频 服务实现类
@@ -30,5 +32,14 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
         queryWrapper.eq("id",id);
         final EduVideo eduVideo = baseMapper.selectOne(queryWrapper);
         return eduVideo;
+    }
+
+
+    @Override
+    public List<EduVideo> getVideoByChapterId(String chapterId) {
+        QueryWrapper<EduVideo> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("chapter_id",chapterId);
+
+        return baseMapper.selectList(queryWrapper);
     }
 }

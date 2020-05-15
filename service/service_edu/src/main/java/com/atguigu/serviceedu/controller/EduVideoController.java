@@ -2,10 +2,12 @@ package com.atguigu.serviceedu.controller;
 
 
 import com.atguigu.commonutils.ResultMap;
+import com.atguigu.serviceedu.client.VodClient;
 import com.atguigu.serviceedu.entity.EduVideo;
 import com.atguigu.serviceedu.service.EduVideoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,6 +25,9 @@ public class EduVideoController {
 
     @Autowired
     EduVideoService videoService;
+
+    @Autowired
+    VodClient vodClient;
 
     //添加小节
     @PostMapping("/addVideo")
@@ -46,13 +51,18 @@ public class EduVideoController {
 
     //删除小节
     /**
-     * TODO 删除小节的时候也要删除里面对应的视频
+     *
      * @param
      * @return
      */
     @DeleteMapping("/deleteVideoByid/{id}")
     public ResultMap deleteVideoById(@PathVariable String id){
+        final EduVideo video = videoService.getVideoById(id);
         boolean flag=videoService.deleteVideoById(id);
+
+        if (!StringUtils.isEmpty(video.getVideoSourceId())){
+              vodClient.removeAlyVideo(video.getVideoSourceId());
+        }
         if (flag){
             return ResultMap.ok();
         }
