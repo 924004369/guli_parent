@@ -2,6 +2,7 @@ package com.atguigu.serviceedu.controller;
 
 
 import com.atguigu.commonutils.ResultMap;
+import com.atguigu.servciebase.config.exceptionHandle.GuliException;
 import com.atguigu.serviceedu.client.VodClient;
 import com.atguigu.serviceedu.entity.EduVideo;
 import com.atguigu.serviceedu.service.EduVideoService;
@@ -61,7 +62,10 @@ public class EduVideoController {
         boolean flag=videoService.deleteVideoById(id);
 
         if (!StringUtils.isEmpty(video.getVideoSourceId())){
-              vodClient.removeAlyVideo(video.getVideoSourceId());
+            final ResultMap resultMap = vodClient.removeAlyVideo(video.getVideoSourceId());
+            if (resultMap.getCode()==400){
+                throw new GuliException(400,"删除视频失败，熔断器。。。");
+            }
         }
         if (flag){
             return ResultMap.ok();

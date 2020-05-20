@@ -1,6 +1,7 @@
 package com.atguigu.serviceedu.client;
 
 import com.atguigu.commonutils.ResultMap;
+import com.atguigu.serviceedu.client.impl.VodClientImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,7 @@ import java.util.List;
  * @date 2020/5/14 17:09
  */
 @Component
-@FeignClient("service-vod")
+@FeignClient(name = "service-vod",fallback = VodClientImpl.class)
 public interface VodClient {
 
     //根据视频id删除阿里云视频
