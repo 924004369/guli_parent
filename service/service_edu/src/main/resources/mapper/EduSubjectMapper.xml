@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.atguigu.serviceedu.mapper.EduSubjectMapper">
-    <resultMap id="BaseResultMap" type="com.atguigu.serviceedu.entity.EduSubject">
+<mapper namespace="com.atguigu.educenter.mapper.EduSubjectMapper">
+    <resultMap id="BaseResultMap" type="com.atguigu.educenter.entity.EduSubject">
         <id column="id" property="id" />
         <result column="title" property="title" />
         <result column="parent_id" property="parentId" />
@@ -20,9 +20,9 @@
         gmtModified
     </sql>
 
-    <resultMap id="UnionWithChildren" type="com.atguigu.serviceedu.entity.EduSubject" extends="BaseResultMap">
-        <collection property="children" ofType="com.atguigu.serviceedu.entity.EduSubject" column="id"
-                    select="com.atguigu.serviceedu.mapper.EduSubjectMapper.getSubjectTest"></collection>
+    <resultMap id="UnionWithChildren" type="com.atguigu.educenter.entity.EduSubject" extends="BaseResultMap">
+        <collection property="children" ofType="com.atguigu.educenter.entity.EduSubject" column="id"
+                    select="com.atguigu.educenter.mapper.EduSubjectMapper.getSubjectTest"></collection>
     </resultMap>
 
     <select id="getSubjects" resultMap="UnionWithChildren">
